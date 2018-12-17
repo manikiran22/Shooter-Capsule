@@ -20,6 +20,14 @@ public class PlayerController : MonoBehaviour
         _velocity = velocity;
     }
 
+    public void LookAt(Vector3 point)
+    {
+
+        //here with the normal point the player is bending while looking at it so a new point which takes the players height in y axis is taken so the player doesn't bend while looking.
+        Vector3 newPoint = new Vector3(point.x,transform.position.y,point.z);
+        transform.LookAt(newPoint);
+    }
+
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + _velocity * Time.fixedDeltaTime);

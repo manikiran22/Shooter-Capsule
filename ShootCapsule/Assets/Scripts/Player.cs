@@ -38,9 +38,16 @@ public class Player : MonoBehaviour
         //here we are checking the condition if the ray is hitting the ground and once it returns true then cast the ray and see it touches the ground.
         if (groundPlane.Raycast(ray,out rayDistance))
         {
+
+            //creating a point that hits the plane.
             Vector3 point = ray.GetPoint(rayDistance);
             Debug.DrawLine(ray.origin, point, Color.blue);
+
+            //making the player look at the point.
+            controller.LookAt(point);
+        
         }
+
     }
 
     
