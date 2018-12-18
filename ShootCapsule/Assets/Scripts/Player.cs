@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(GunController))]
 
 
 public class Player : MonoBehaviour
@@ -12,19 +13,24 @@ public class Player : MonoBehaviour
     Camera viewCamera;
 
     PlayerController controller;
+    GunController gunController;
 
     void Start()
     {
         controller = GetComponent<PlayerController>();
+        gunController = GetComponent<GunController>();
         viewCamera = Camera.main;
     }
 
     void Update()
     {
+
+        //MOVING INPUT
         Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"),0, Input.GetAxisRaw("Vertical"));
         Vector3 velocity = input.normalized * moveSpeed;
         controller.Move(velocity);
 
+        //LOOKAT INPUT
         //Creating a Ray that takes input from the camera to mouseposition
         Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
         //creating a groundplane which faces to the vector3 up direction
@@ -44,8 +50,16 @@ public class Player : MonoBehaviour
             Debug.DrawLine(ray.origin, point, Color.blue);
 
             //making the player look at the point.
-            controller.LookAt(point);
-        
+            controller.LookAt(point);        
+        }
+
+        //SHOOTING INPUT
+        void ShootInput()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                gunController.Shooter();
+            }
         }
 
     }
