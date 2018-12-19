@@ -18,9 +18,10 @@ public class Gun : MonoBehaviour
         if (Time.time > nextBulletTime)
         {
             nextBulletTime = Time.time + msBetweeenfire / 1000;
-            Debug.Log(nextBulletTime);
+           // Debug.Log(nextBulletTime);
         }
 
+        //though there is projectile for Projectile we are creating the newProjectile so the projectile can be instantiated.
         Projectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation) as Projectile;
         newProjectile.SetSpeed(muzzleVelocity);
     }
