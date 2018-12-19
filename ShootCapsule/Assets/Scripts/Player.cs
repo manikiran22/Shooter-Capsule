@@ -53,17 +53,17 @@ public class Player : MonoBehaviour
             controller.LookAt(point);        
         }
 
-        //SHOOTING INPUT
-        void ShootInput()
-        {
-            if (Input.GetMouseButton(0))
-            {
-                gunController.Shooter();
-            }
-        }
+        ShootInput();
 
     }
 
-    
-    
+    //SHOOTING INPUT
+    void ShootInput()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            gunController.Shooter();
+        }
+    }
+
 }

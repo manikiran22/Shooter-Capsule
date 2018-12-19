@@ -8,8 +8,8 @@ public class Gun : MonoBehaviour
     public Projectile projectile;
 
     public Transform muzzle;
-    float muzzleVelocity = 35;
-    float msBetweeenfire = 100;
+    public float muzzleVelocity = 35;
+    public float msBetweeenfire = 100;
 
     float nextBulletTime;
 
