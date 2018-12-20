@@ -5,14 +5,15 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 
-public class Enenmy : MonoBehaviour
+public class Enenmy : LivingEntity
 {
     public Transform target;
 
     NavMeshAgent agent;    
 
-    void Start()
+    public override void Start()
     {
+        base.Start();
         agent = GetComponent<NavMeshAgent>();
         //another way of making player's transform as a target is and its transform specifically.
         //target = GameObject.FindGameObjectWithTag("Player").transform;

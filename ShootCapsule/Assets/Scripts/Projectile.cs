@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
 
     public LayerMask collisionMask;
 
+
     //this method is created so when ever we change the muzzle velocity it is reflected with the speed in this class.
     public void SetSpeed(float newSpeed)
     {
@@ -40,7 +41,17 @@ public class Projectile : MonoBehaviour
     //here we are destroying the bullet and getting a return info of whether a bullet is hit or not.
     void OnHitCheck(RaycastHit hit)
     {
-        print(hit.collider.gameObject.name);
+        //here first we are calling the IDamageble script 
+        //and then on what ever with the hit HITS it is checking if the hitted object having the IDamageble so it can call the TakeHit method.
+        //since TakeHit is the method that allows the projectile to destroy.
+        IDamageble damageObject = hit.collider.GetComponent<IDamageble>();
+
+        if (damageObject != null)
+        {
+            float damage = 1;
+            damageObject.TakeHit(damage, hit);
+        }
+        //print(hit.collider.gameObject.name);
 
         GameObject.Destroy(gameObject);
     }
