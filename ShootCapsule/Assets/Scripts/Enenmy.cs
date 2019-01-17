@@ -15,6 +15,7 @@ public class Enenmy : LivingEntity
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
+        
         //another way of making player's transform as a target is and its transform specifically.
         //target = GameObject.FindGameObjectWithTag("Player").transform;
 
