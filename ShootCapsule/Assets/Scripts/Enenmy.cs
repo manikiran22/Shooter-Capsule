@@ -11,7 +11,7 @@ public class Enenmy : LivingEntity
 
     NavMeshAgent agent;    
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
@@ -43,6 +43,12 @@ public class Enenmy : LivingEntity
             //the below step can be done yet still yields the same result of tracking targets position
             //Vector3 targetPos = new Vector3(target.position.x, 0, target.position.z);
 
+            //we did the if cause lets say player is dead then the below corotine will still run and since there will be no target it will throw out an error.
+            if (!dead)
+            {
+                agent.SetDestination(target.position);
+
+            }
             agent.SetDestination(target.position);
             yield return new WaitForSeconds(refreshRate);
         }

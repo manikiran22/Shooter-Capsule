@@ -15,7 +15,7 @@ public class Player : LivingEntity
     PlayerController controller;
     GunController gunController;
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         controller = GetComponent<PlayerController>();
