@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class Enenmy : LivingEntity
 {
-    public Transform target;
+    private Transform target;
 
     NavMeshAgent agent;    
 
@@ -15,7 +15,7 @@ public class Enenmy : LivingEntity
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
-        
+        target = GameObject.Find("Player").GetComponent<Transform>();
         //another way of making player's transform as a target is and its transform specifically.
         //target = GameObject.FindGameObjectWithTag("Player").transform;
 

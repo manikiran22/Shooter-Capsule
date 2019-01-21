@@ -537,7 +537,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1002202296
@@ -647,7 +647,7 @@ MonoBehaviour:
     timeBetweenSpwan: 1
   - enemyCount: 10
     timeBetweenSpwan: 0.25
-  enemy: {fileID: 2064599430503970785, guid: a5b7fa5b2e5e9d54d840438db3cfe5f0, type: 3}
+  enemy: {fileID: 7153645521996809984, guid: a5b7fa5b2e5e9d54d840438db3cfe5f0, type: 3}
 --- !u!1 &2061541820
 GameObject:
   m_ObjectHideFlags: 0
