@@ -9,6 +9,14 @@ public class Enenmy : LivingEntity
 {
     private Transform target;
 
+    enum State {Chase, Idle, Attacking};
+    State currentState;
+
+    float attackThreshold = 1.5f;
+    float timeBetAttack = 1;
+
+    float nextAttackTime;
+
     NavMeshAgent agent;    
 
     protected override void Start()
@@ -30,8 +38,44 @@ public class Enenmy : LivingEntity
         //to avoid that i am thinking to use coroutine since it can have a structured refresh rates.
         //agent.SetDestination(target.position);
 
-
+        if (Time.time > nextAttackTime)
+        {
+            float sqrDistTarget = (transform.position - target.position).sqrMagnitude;
+            if (sqrDistTarget < Mathf.Pow(attackThreshold, 2))
+            {
+                nextAttackTime = Time.time + timeBetAttack;
+                StartCoroutine(Attack());
+            }
+        }
        
+    }
+
+    IEnumerator Attack()
+    {
+
+        agent.enabled = false;
+
+        Vector3 originalPosition = transform.position;
+        Vector3 attackPosition = target.position;
+
+        float percent = 0;
+
+        float attackSpeed = 3;
+
+        while (percent <= 1)
+        {
+
+            percent = Time.deltaTime * attackSpeed;
+
+            float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
+            transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);
+
+
+            yield return null;
+        }
+
+        agent.enabled = true;
+
     }
 
     IEnumerator PathUpdate()
@@ -50,7 +94,7 @@ public class Enenmy : LivingEntity
                 agent.SetDestination(target.position);
 
             }
-            agent.SetDestination(target.position);
+           
             yield return new WaitForSeconds(refreshRate);
         }
     }
