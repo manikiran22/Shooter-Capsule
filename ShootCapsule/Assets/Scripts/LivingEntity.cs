@@ -30,4 +30,4 @@ public class LivingEntity : MonoBehaviour, IDamageble
         GameObject.Destroy(gameObject);
     }
     //first this class is created so the player,enemy share the same health status 
-}
+} 

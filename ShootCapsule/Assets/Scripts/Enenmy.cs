@@ -9,7 +9,7 @@ public class Enenmy : LivingEntity
 {
     private Transform target;
 
-    enum State {Chase, Idle, Attacking};
+    enum State { Chase, Idle, Attacking };
     State currentState;
 
     float attackThreshold = 1.5f;
@@ -17,9 +17,12 @@ public class Enenmy : LivingEntity
 
     float nextAttackTime;
 
-    NavMeshAgent agent;    
+    float myCollisionRadius;
+    float targetCollisionRadius;
 
-    protected override void Start()
+    NavMeshAgent agent;
+
+   protected override void Start()
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
@@ -27,11 +30,11 @@ public class Enenmy : LivingEntity
         //another way of making player's transform as a target is and its transform specifically.
         //target = GameObject.FindGameObjectWithTag("Player").transform;
 
+        currentState = State.Chase;
         StartCoroutine(PathUpdate());
 
     }
 
-   
     void Update()
     {
         //the below will allow the enemy to go behind the player, but its costly on performance since multiple enemies will be implement.
@@ -47,16 +50,23 @@ public class Enenmy : LivingEntity
                 StartCoroutine(Attack());
             }
         }
-       
+
     }
 
     IEnumerator Attack()
     {
 
-        agent.enabled = false;
+        currentState = State.Attacking;
+        agent.enabled = false;     
+        
 
         Vector3 originalPosition = transform.position;
         Vector3 attackPosition = target.position;
+
+        /*Vector3 Temp = originalPosition;
+        Temp.x += 5f;
+        Temp.z += 5f;
+        originalPosition = Temp;*/
 
         float percent = 0;
 
@@ -65,37 +75,41 @@ public class Enenmy : LivingEntity
         while (percent <= 1)
         {
 
-            percent = Time.deltaTime * attackSpeed;
-
+            percent += Time.deltaTime * attackSpeed;
+            Debug.Log(percent);
             float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
-            transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);
+            transform.position = Vector3.Lerp(originalPosition, attackPosition , interpolation);
 
 
             yield return null;
         }
 
+        currentState = State.Chase;
         agent.enabled = true;
 
     }
 
-    IEnumerator PathUpdate()
+   IEnumerator PathUpdate()
     {
         float refreshRate = 0.25f;
 
         while (target != null)
         {
-
-            //the below step can be done yet still yields the same result of tracking targets position
-            //Vector3 targetPos = new Vector3(target.position.x, 0, target.position.z);
-
-            //we did the if cause lets say player is dead then the below corotine will still run and since there will be no target it will throw out an error.
-            if (!dead)
+            if (currentState == State.Chase)
             {
-                agent.SetDestination(target.position);
+                //the below step can be done yet still yields the same result of tracking targets position
+                Vector3 targetPos = new Vector3(target.position.x, 0, target.position.z);
+
+                //we did the if cause lets say player is dead then the below corotine will still run and since there will be no target it will throw out an error.
+                if (!dead)
+                {
+                    agent.SetDestination(targetPos);
+
+                }
 
             }
-           
-            yield return new WaitForSeconds(refreshRate);
+                yield return new WaitForSeconds(refreshRate);
+            }
         }
     }
-}
+

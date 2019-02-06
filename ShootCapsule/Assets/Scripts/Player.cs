@@ -23,7 +23,7 @@ public class Player : LivingEntity
         viewCamera = Camera.main;
     }
 
-    void Update()
+   void Update()
     {
 
         //MOVING INPUT

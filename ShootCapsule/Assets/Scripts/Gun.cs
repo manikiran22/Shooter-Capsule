@@ -12,6 +12,12 @@ public class Gun : MonoBehaviour
     public float msBetweeenfire = 100;
 
     float nextBulletTime;
+    Vector3 offsetDistance;
+
+    private void OnEnable()
+    {
+        offsetDistance = new Vector3(0, 0, 0.2f);
+    }
 
     public void Shoot()
     {
@@ -22,7 +28,7 @@ public class Gun : MonoBehaviour
         }
 
         //though there is projectile for Projectile we are creating the newProjectile so the projectile can be instantiated.
-        Projectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation) as Projectile;
+        Projectile newProjectile = Instantiate(projectile, muzzle.position + offsetDistance, muzzle.rotation) as Projectile;
         newProjectile.SetSpeed(muzzleVelocity);
     }
  
