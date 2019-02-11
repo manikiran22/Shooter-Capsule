@@ -9,6 +9,9 @@ public class LivingEntity : MonoBehaviour, IDamageble
     protected float health;
     protected bool dead;
 
+    //creating an event so the enemy can sybscribe to it and destroy the GO on death.
+    public event System.Action OnDeath;
+
     protected virtual void Start()
     {
         startingHealth = health;
@@ -27,6 +30,11 @@ public class LivingEntity : MonoBehaviour, IDamageble
     public void Die()
     {
         dead = true;
+        if (OnDeath != null)
+        {
+            OnDeath();            
+        }
+
         GameObject.Destroy(gameObject);
     }
     //first this class is created so the player,enemy share the same health status 

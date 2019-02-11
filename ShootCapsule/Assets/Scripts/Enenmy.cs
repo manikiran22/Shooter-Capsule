@@ -23,25 +23,47 @@ public class Enenmy : LivingEntity
     float myCollisionRadius;
     float targetCollisionRadius;
 
+    LivingEntity targetEntity;
+
+    bool hasTarget;
+
     NavMeshAgent agent;
 
    protected override void Start()
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
-        target = GameObject.Find("Player").GetComponent<Transform>();
-        //another way of making player's transform as a target is and its transform specifically.
-        //target = GameObject.FindGameObjectWithTag("Player").transform;
-
-        myCollisionRadius = GetComponent<CapsuleCollider>().radius;
-        targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
-
         skinMaterial = GetComponent<Renderer>().material;
         originalColor = skinMaterial.color;
 
-        currentState = State.Chase;
-        StartCoroutine(PathUpdate());
+        //checking if the 
+        if (GameObject.FindGameObjectsWithTag("Player") != null)
+        {
 
+            currentState = State.Chase;
+            hasTarget = true;
+
+            target = GameObject.Find("Player").GetComponent<Transform>();
+            //another way of making player's transform as a target is and its transform specifically.
+            //target = GameObject.FindGameObjectWithTag("Player").transform;
+
+            myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+            targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+
+            //creating an entinty wrt the target
+            targetEntity = target.GetComponent<LivingEntity>();
+            targetEntity.OnDeath += OnTargetDeath;
+
+
+            currentState = State.Chase;
+            StartCoroutine(PathUpdate());
+        }
+    }
+
+    void OnTargetDeath()
+    {
+        hasTarget = false;
+        currentState = State.Idle;
     }
 
     void Update()
@@ -50,13 +72,16 @@ public class Enenmy : LivingEntity
         //to avoid that i have implemented coroutine since it can have a structured refresh rates.
         //agent.SetDestination(target.position);
 
-        if (Time.time > nextAttackTime)
+        if (hasTarget)
         {
-            float sqrDistTarget = (transform.position - target.position).sqrMagnitude;
-            if (sqrDistTarget < Mathf.Pow(attackThreshold + myCollisionRadius + targetCollisionRadius, 2))
+            if (Time.time > nextAttackTime)
             {
-                nextAttackTime = Time.time + timeBetAttack;
-               StartCoroutine(Attack());
+                float sqrDistTarget = (transform.position - target.position).sqrMagnitude;
+                if (sqrDistTarget < Mathf.Pow(attackThreshold + myCollisionRadius + targetCollisionRadius, 2))
+                {
+                    nextAttackTime = Time.time + timeBetAttack;
+                    StartCoroutine(Attack());
+                }
             }
         }
 
@@ -107,7 +132,8 @@ public class Enenmy : LivingEntity
     {
         float refreshRate = 0.25f;
 
-        while (target != null)
+        //while (target != null)
+        while(hasTarget)
         {
             if (currentState == State.Chase)
             {

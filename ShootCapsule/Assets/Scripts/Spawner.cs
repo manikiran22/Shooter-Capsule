@@ -15,10 +15,11 @@ public class Spawner : MonoBehaviour
     int currentWaveNumber;
 
     //no of enemies that are remaining to spawn though the enemy count is given
-    //
     int enemiesRemainigToSpawn;
     float nextSpawnTime;
 
+    //enemies remaining alive in the game
+    int enemiesRemainingAlive;
 
     private void Start()
     {
@@ -28,21 +29,38 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
+        print(currentWaveNumber);
         if (enemiesRemainigToSpawn > 0 && Time.time > nextSpawnTime)
         {
             enemiesRemainigToSpawn--;
             nextSpawnTime = Time.time + currentWave.timeBetweenSpwan;
 
             Enenmy spawnedEnemy = Instantiate(enemy, Vector3.zero, Quaternion.identity);
+            spawnedEnemy.OnDeath += OnEnemyDeath;
         }
     }
 
+    void OnEnemyDeath()
+    {
+        //print("Enemy death");
+        enemiesRemainingAlive--;
+
+        if (enemiesRemainingAlive == 0)
+        {
+            NextWave();
+        }
+    }
     void NextWave()
     {
         currentWaveNumber++;
-        currentWave = wave[currentWaveNumber - 1];
+        
+        if (currentWaveNumber - 1 < wave.Length)
+        {
+            currentWave = wave[currentWaveNumber - 1];
 
-        enemiesRemainigToSpawn = currentWave.enemyCount;
+            enemiesRemainigToSpawn = currentWave.enemyCount;
+            enemiesRemainingAlive = enemiesRemainigToSpawn;
+        }
     }
 
     //here first we created the class of wave and gave it 2 inputs for spawing the wave.
