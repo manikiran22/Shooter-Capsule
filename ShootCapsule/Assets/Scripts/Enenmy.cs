@@ -27,6 +27,8 @@ public class Enenmy : LivingEntity
 
     bool hasTarget;
 
+    float damage = 1;
+
     NavMeshAgent agent;
 
    protected override void Start()
@@ -99,12 +101,13 @@ public class Enenmy : LivingEntity
         Vector3 attackPosition = target.position - dirToTarget * (myCollisionRadius);
 
 
-        
+
         /*Vector3 Temp = originalPosition;
         Temp.x += 5f;
         Temp.z += 5f;
         originalPosition = Temp;*/
 
+        bool hasAppliedDamage = false;
         float percent = 0;
 
         float attackSpeed = 3;
@@ -113,6 +116,12 @@ public class Enenmy : LivingEntity
         while (percent <= 1)
         {
 
+            if (percent >= .5f && !hasAppliedDamage)
+            {
+                hasAppliedDamage = true;
+                //targetEntity.TakeHit();
+                targetEntity.TakeDamage(damage);
+            }
             percent += Time.deltaTime * attackSpeed;
             Debug.Log(percent);
             float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
