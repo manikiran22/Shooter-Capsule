@@ -8,6 +8,14 @@ public class Projectile : MonoBehaviour
 
     public LayerMask collisionMask;
 
+    //giving the life time of the bullet that can be in the game
+    float lifetime = 2;
+
+
+    private void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
 
     //this method is created so when ever we change the muzzle velocity it is reflected with the speed in this class.
     public void SetSpeed(float newSpeed)

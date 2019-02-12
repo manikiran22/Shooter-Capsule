@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
-        print(currentWaveNumber);
+        //print(currentWaveNumber);
         if (enemiesRemainigToSpawn > 0 && Time.time > nextSpawnTime)
         {
             enemiesRemainigToSpawn--;

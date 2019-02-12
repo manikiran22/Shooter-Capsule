@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af1d2c638721a94aa11864815834d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 2
+  startingHealth: 10
 --- !u!1 &569287571
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,9 +859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wave:
-  - enemyCount: 4
-    timeBetweenSpwan: 1
-  - enemyCount: 4
+  - enemyCount: 5
     timeBetweenSpwan: 1
   enemy: {fileID: 7153645521996809984, guid: a5b7fa5b2e5e9d54d840438db3cfe5f0, type: 3}
 --- !u!1 &1649210079

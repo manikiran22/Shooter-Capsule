@@ -27,7 +27,7 @@ public class Enenmy : LivingEntity
 
     bool hasTarget;
 
-    float damage = 1;
+    float damage = 2;
 
     NavMeshAgent agent;
 
@@ -123,7 +123,7 @@ public class Enenmy : LivingEntity
                 targetEntity.TakeDamage(damage);
             }
             percent += Time.deltaTime * attackSpeed;
-            Debug.Log(percent);
+            //  Debug.Log(percent);
             float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
             transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);
             
