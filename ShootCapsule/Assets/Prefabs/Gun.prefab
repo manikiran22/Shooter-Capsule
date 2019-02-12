@@ -203,7 +203,7 @@ MonoBehaviour:
     type: 3}
   muzzle: {fileID: 445245030962198838}
   muzzleVelocity: 30
-  msBetweeenfire: 1000000
+  msBetweeenfire: 2000000
 --- !u!1 &7368055447493920083
 GameObject:
   m_ObjectHideFlags: 0

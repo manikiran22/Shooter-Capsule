@@ -11,10 +11,20 @@ public class Projectile : MonoBehaviour
     //giving the life time of the bullet that can be in the game
     float lifetime = 2;
 
+    float skinWidth = .1f;
 
     private void Start()
     {
+        //destroying the bullets which are not hit by game object.
         Destroy(gameObject, lifetime);
+
+        //to collect the array of colliders which the gun is inside of.
+        //
+        Collider[] initialCollision = Physics.OverlapSphere(transform.position, .1f, collisionMask);
+        if (initialCollision.Length > 0)
+        {
+            OnHiObject(initialCollision[0]);
+        }
     }
 
     //this method is created so when ever we change the muzzle velocity it is reflected with the speed in this class.
@@ -39,7 +49,7 @@ public class Projectile : MonoBehaviour
         Ray ray = new Ray(transform.position, Vector3.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, moveDistance, collisionMask, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out hit, moveDistance + skinWidth, collisionMask, QueryTriggerInteraction.Collide))
         {
             OnHitCheck(hit);
             Debug.DrawLine(ray.origin, Vector3.forward * moveDistance, Color.red);
@@ -63,4 +73,25 @@ public class Projectile : MonoBehaviour
 
         GameObject.Destroy(gameObject);
     }
+
+
+    //this is for the bullet which is inside a collider and still destroying the gameObject.
+
+    void OnHiObject(Collider c)
+    {
+        //here first we are calling the IDamageble script 
+        //and then on what ever with the hit HITS it is checking if the hitted object having the IDamageble so it can call the TakeHit method.
+        //since TakeHit is the method that allows the projectile to destroy.
+        IDamageble damageObject = c.GetComponent<IDamageble>();
+
+        if (damageObject != null)
+        {
+            float damage = 1;
+            damageObject.TakeDamage(damage);
+        }
+        //print(hit.collider.gameObject.name);
+
+        GameObject.Destroy(gameObject);
+    }
+
 }
