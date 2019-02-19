@@ -15,19 +15,22 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        MapGenerate();
+        GenerateMap();
     }
-    void MapGenerate()
+
+    public void GenerateMap()
     {
 
-        /*string holderName = "Generate Map";
+        string holderName = "Generate Map";
 
-        if (transform.FindChild(holderName))
+        if (transform.Find(holderName))
         {
-            DestroyImmediate(transform.FindChild(holderName));
-        }*/
+            DestroyImmediate(transform.Find(holderName).gameObject);
+        }
 
 
+        Transform mapHolder = new GameObject(holderName).transform;
+        mapHolder.parent = transform;
 
         for (int x = 0; x < mapSize.x; x++)
         {
@@ -39,6 +42,8 @@ public class MapGenerator : MonoBehaviour
                 //this is to scale the outline width wrt percent.
                 //when outlinePercent is 1 then tile scale becomes 0 which means no tile and the outline is more.
                 newTile.localScale = Vector3.one * (1-outlinePercent);
+
+                newTile.parent = mapHolder;
             }
         }
     }
