@@ -15,7 +15,7 @@ public class MapEditor : Editor
         
         //the object being inspected
         MapGenerator maps = target as MapGenerator;
-
+       
         maps.GenerateMap();
 
     }
