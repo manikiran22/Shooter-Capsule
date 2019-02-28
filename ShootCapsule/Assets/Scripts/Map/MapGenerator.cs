@@ -15,9 +15,15 @@ public class MapGenerator : MonoBehaviour
     [Range(0, 1)]
     public float outlinePercent;
 
+    //spawn the number of obstacles by changing the range
+    [Range(0, 1)]
+    public float obstaclePercent;
+
     //allTile is the all tiles in the scene 
     List<Coord> allTileCoord;
     Queue<Coord> shuffleCoord;
+
+    Coord mapCenter;
 
     private void Start()
     {
@@ -42,8 +48,11 @@ public class MapGenerator : MonoBehaviour
         //here since we are using the shufflearray method from the utility class the alltilecord's coord's will be changed
         shuffleCoord = new Queue<Coord>(Utility.ShuffleArray(allTileCoord.ToArray(), seed));
 
+        //step12
+        //player spawn pos
+        mapCenter = new Coord((int)mapSize.x / 2, (int)mapSize.y / 2);
 
-        //STEp-3
+        //STEp-3            
         string holderName = "Generate Map";
 
         if (transform.Find(holderName))
@@ -83,22 +92,40 @@ public class MapGenerator : MonoBehaviour
 
         }
 
+        //Step11
+        bool[,] obstacleMap = new bool[(int)mapSize.x, (int)mapSize.y];
+
+        int currentObstacleCount = 0;
 
         //step9
-        int obstacleCount = 50;
+        int obstacleCount = (int)(mapSize.x * mapSize.y * obstaclePercent);
         for (int i = 0; i < obstacleCount; i++)
         {   
             //returning structure from a function
-            Coord randomCoordGetter = GetRandomCoord();
+            Coord randomCoord =     GetRandomCoord();
             //randomCoord = CoordToPos);
-            Vector3 obstaclePos = CoordToPos(randomCoordGetter.x, randomCoordGetter.y);
 
-            Transform newObstacle = Instantiate(obstaclePrefab, obstaclePos + Vector3.up * 0.5f ,Quaternion.identity) as Transform;
-            newObstacle.parent = mapHolder;
+           
+
+            //checking if the random co0 generatd is not the center map as the player spawns there
+            if (randomCoord.x != mapCenter.x && randomCoord.y != mapCenter.y && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
+            {
+                Vector3 obstaclePos = CoordToPos(randomCoord.x, randomCoord.y);
+
+                Transform newObstacle = Instantiate(obstaclePrefab, obstaclePos + Vector3.up * 0.5f, Quaternion.identity) as Transform;
+                newObstacle.parent = mapHolder;
+            }
         }
 
     }
 
+    //step13
+    //this is for checking if the map is available with no blockers for the obstacles to spawn
+    bool MapIsFullyAccessible(bool[,] obstacleMap, int currentObstacleCount)
+    {
+
+        return false;
+    }
     //step10
     public Vector3 CoordToPos(int x, int y)
     {
